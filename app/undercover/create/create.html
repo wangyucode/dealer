@@ -1,0 +1,9 @@
+<div>总数：<span>{{total}}</span></div>
+<div>平民：<span>{{civilian}}</span></div>
+<div>卧底：<span>{{undercover}}</span></div>
+<div>白板：<span>{{blank}}</span></div>
+
+<div>总人数：<input type="range" ng-model="total" ng-change="change()" value="4" min="4" max="21" required></input></div>
+<div>白板：<input type="checkbox" ng-model="hasBlank" ng-change="change()" value="false" required></input></div>
+
+<button ng-click="create()">创建</button>

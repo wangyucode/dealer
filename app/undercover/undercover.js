@@ -5,4 +5,6 @@ angular.module('dealer.undercover', ['ngRoute'])
         $routeProvider.when('/undercover', {
             templateUrl: 'undercover/undercover.html'
         });
-    }])
+        
+    }]);
+    
