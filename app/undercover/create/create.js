@@ -38,7 +38,16 @@ angular.module('dealer.undercover')
             $scope.civilian = $scope.total - $scope.undercover - $scope.blank;
         };
 
+        function connectCallback(){
+            console.log("connected")
+        }
+
+        function errorCallback(error){
+            console.log(error)
+        }
+
         $scope.create = function () {
-            console.log("create");
+            var client = Stomp.client("ws://localhost:8080/stomp");
+            client.connect({}, connectCallback, errorCallback);
         }
     }]);
