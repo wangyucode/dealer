@@ -4,7 +4,7 @@
 angular.module('dealer', [
   'ngRoute',
   'dealer.main',
-  'dealer.view2',
+  'dealer.undercover',
   'dealer.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
