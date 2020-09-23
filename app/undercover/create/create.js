@@ -7,7 +7,7 @@ angular.module('dealer.undercover')
             controller: 'UndercoverCreateCtrl'
         });
     }])
-    .controller('UndercoverCreateCtrl', ['$scope', function ($scope) {
+    .controller('UndercoverCreateCtrl', ['$scope','$location', function ($scope, $location) {
         $scope.civilian = 3;
         $scope.undercover = 1;
         $scope.total = 4;
@@ -39,7 +39,8 @@ angular.module('dealer.undercover')
         };
 
         function connectCallback(){
-            console.log("connected")
+            console.log(123);
+            
         }
 
         function errorCallback(error){
@@ -47,7 +48,9 @@ angular.module('dealer.undercover')
         }
 
         $scope.create = function () {
-            var client = Stomp.client("ws://localhost:8080/stomp");
-            client.connect({}, connectCallback, errorCallback);
+            $location.path("/undercover/play").search({"host": 1});
+            // Stomp.client("ws://localhost:8080/stomp").connect({},connectCallback, errorCallback);
         }
+
+
     }]);

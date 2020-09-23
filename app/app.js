@@ -5,7 +5,7 @@ angular.module('dealer', [
   'ngRoute',
   'dealer.main',
   'dealer.undercover',
-  'dealer.createJoinRoom'
+  'dealer.createJoinRoom',
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
