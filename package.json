@@ -10,7 +10,7 @@
     "angular-loader": "^1.7.5",
     "angular-route": "^1.7.5",
     "html5-boilerplate": "0.0.1",
-    "stompjs": "2.3.3"
+    "@stomp/stompjs": "5.4.4"
   },
   "devDependencies": {
     "angular-mocks": "^1.7.5",
@@ -27,7 +27,7 @@
     "postinstall": "npm run copy-libs",
     "update-deps": "npm update",
     "postupdate-deps": "npm run copy-libs",
-    "copy-libs": "cpx \"node_modules/{angular,angular-*,html5-boilerplate/dist,stompjs/lib}/**/*\" app/lib -C",
+    "copy-libs": "cpx \"node_modules/{angular,angular-*,html5-boilerplate/dist,@stomp/stompjs/bundles}/**/*\" app/lib -C",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ./app",
     "pretest": "npm install",
