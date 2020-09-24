@@ -52,10 +52,9 @@ angular.module('dealer.undercover')
             stompClient.onConnect = function (frame) {
                 // Do something, all subscribes must be done is this callback
                 // This is needed because this will be executed after a (re)connect
-                $location.path("/undercover/play").search({ "host": 1 });
                 console.log(frame);
 
-                
+                $location.path("/undercover/play").search({ "host": 1 });
                 $scope.$apply();
             };
 
