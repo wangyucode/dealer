@@ -1,19 +1,16 @@
 <h1>谁是卧底</h1>
 <h2>房间号：<span>{{roomId}}</span></h2>
-<p>你的身份是：</p>
-<button>查看</button>
-<p ng-hide="showRole">{{role}}</p>
+<h2>你是：<span>{{userId}}</span>号玩家<span ng-if="host">（房主）</span></h2>
 
 <ul>
     <li>每轮结束后，请房主选择被投出的玩家。</li>
     <li>游戏会自动判断胜负。</li>
 </ul>
 
-<ul>
-    <li>
-        <div>
-            <p>1</p>
-            <img/>
-        </div>
-    </li>
-</ul>
+<div>
+    <div ng-repeat="user in users">
+        {{user.id}}
+    </div>
+</div>
+
+<button ng-if="host && !started">开始游戏</button>

@@ -18,9 +18,8 @@ angular.module('dealer.directive.createJoinRoom', [])
             $scope.create = function () {
                 $http.get(serverURL + "/dealer/createRoom").then(function (response) {
                     console.log(response);
-                    var roomAndUser = response.data.data.split(',')
-                    initData.roomId = roomAndUser[0]
-                    initData.userId = roomAndUser[1]
+                    initData.roomId = response.data.data.roomId
+                    initData.userId = response.data.data.id
                     $location.path("/undercover/play").search({ "host": 1 });
                 });
             };
@@ -28,12 +27,11 @@ angular.module('dealer.directive.createJoinRoom', [])
             $scope.join = function (roomId) {
                 $http.get(serverURL + "/dealer/joinRoom", { params: { id: roomId } }).then(function (response) {
                     console.log(response);
-                    if(response.data.error){
+                    if (response.data.error) {
                         $scope.error = response.data.error;
-                    }else{
-                        var roomAndUser = response.data.data.split(',')
-                        initData.roomId = roomAndUser[0]
-                        initData.userId = roomAndUser[1]
+                    } else {
+                        initData.roomId = response.data.data.roomId
+                        initData.userId = response.data.data.id
                         $location.path("/undercover/play");
                     }
                 });
