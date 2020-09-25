@@ -7,7 +7,7 @@ angular.module('dealer.undercover')
             controller: 'UndercoverCreateCtrl'
         });
     }])
-    .controller('UndercoverCreateCtrl', ['$scope', '$location', 'stompClient', function ($scope, $location, stompClient) {
+    .controller('UndercoverCreateCtrl', ['$scope', '$location', '$http', 'serverURL','initData', function ($scope, $location, $http, serverURL,initData) {
         $scope.civilian = 3;
         $scope.undercover = 1;
         $scope.total = 4;
@@ -48,25 +48,15 @@ angular.module('dealer.undercover')
         }
 
         $scope.create = function () {
-            console.log("stompClient->", stompClient)
-            stompClient.onConnect = function (frame) {
-                // Do something, all subscribes must be done is this callback
-                // This is needed because this will be executed after a (re)connect
-                console.log(frame);
-
+            $http.get(serverURL + "/dealer/createRoom").then(function (response) {
+                console.log(response);
+                var roomAndUser = response.data.data.split(',')
+                initData.roomId = roomAndUser[0]
+                initData.userId = roomAndUser[1]
                 $location.path("/undercover/play").search({ "host": 1 });
-                $scope.$apply();
-            };
 
-            stompClient.onStompError = function (frame) {
-                // Will be invoked in case of error encountered at Broker
-                // Bad login/passcode typically will cause an error
-                // Complaint brokers will set `message` header with a brief message. Body may contain details.
-                // Compliant brokers will terminate the connection after any error
-                console.log('Broker reported error: ' + frame.headers['message']);
-                console.log('Additional details: ' + frame.body);
-            };
-            stompClient.activate();
+            });
+            
         }
 
 

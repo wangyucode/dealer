@@ -1,2 +1,7 @@
-<button ng-click="create()">创建房间</button>
-<button ng-click="join()">加入房间</button>
+<form>
+    <button ng-click="create()">创建房间</button>
+    <input type="text" ng-model="roomId" name="roomId" placeholder="房间号" minlength="4" maxlength="4"
+        required="" ng-focus="error=false"></input>
+    <button type="submit" ng-click="join(roomId)" ng-disabled="!roomId">加入房间</button>
+    <p ng-show="error">{{error}}</p>
+</form>

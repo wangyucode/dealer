@@ -8,26 +8,8 @@ angular.module('dealer.undercover')
         });
 
     }])
-    .controller('UndercoverPlayCtrl', ['$scope', '$location', 'stompClient', function ($scope, $location, stompClient) {
+    .controller('UndercoverPlayCtrl', ['$scope', '$location', 'serverURL','initData', function ($scope, $location, serverURL,initData) {
         $scope.showRole = false;
-        $scope.roomId = "";
-
-        if ($location.search().host) {
-            stompClient.subscribe('/user/queue/dealer/status', function (message) {
-                console.log(message);
-                if(message.body.error){
-                    console.log(message.body.error)
-                }else{
-                    var payload = JSON.parse(message.body)
-                    if(!payload.error){
-                        $scope.roomId = payload.data.roomId;
-                        $scope.$apply();
-                    }
-                    
-                }
-            });
-        }
-
-        stompClient.publish({destination: '/app/dealer/status'});
-
+        $scope.roomId = initData.roomId;
+        console.log(initData)
     }]);
