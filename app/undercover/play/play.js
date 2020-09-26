@@ -18,6 +18,7 @@ angular.module('dealer.undercover')
             $scope.roomId = initData.roomId;
             $scope.userId = initData.userId;
             $scope.host = $location.search().host;
+            $scope.message = "请房主等待所有玩家加入后点击“开始游戏”"
 
             var userUpdateTime = 0
             var roleUpdateTime = 0

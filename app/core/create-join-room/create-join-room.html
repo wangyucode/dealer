@@ -1,7 +1,24 @@
-<form novalidate>
-    <button ng-click="create()">创建房间</button>
-    <input type="text" ng-model="roomId" name="roomId" placeholder="房间号" minlength="4" maxlength="4" required=""
-        ng-focus="error=false"></input>
-    <button type="submit" ng-click="join(roomId)" ng-disabled="!roomId">加入房间</button>
-    <p ng-show="error">{{error}}</p>
+<form novalidate class="col-sm-8 col-md-6 create-join-form">
+    <div class="form-group">
+        <button ng-click="create()" class="form-control btn btn-primary" ng-disabled="creating">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="creating"></span>
+            创建房间
+        </button>
+    </div>
+
+    <div class="input-group form-group">
+        <input type="text" ng-model="roomId" name="roomId" placeholder="房间号" minlength="4" maxlength="4" required=""
+            ng-focus="error=false" class="form-control text-center"></input>
+        <span class="input-group-append">
+            <button type="submit" class="btn btn-success" ng-click="join(roomId)" ng-disabled="!roomId || joining">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                    ng-show="joining"></span>
+                加入房间
+            </button>
+        </span>
+    </div>
+
+    <div class="alert alert-danger" ng-show="error" role="alert">
+        {{error}}
+    </div>
 </form>
