@@ -10,7 +10,7 @@
         <input type="text" ng-model="roomId" name="roomId" placeholder="房间号" minlength="4" maxlength="4" required=""
             ng-focus="error=false" class="form-control text-center"></input>
         <span class="input-group-append">
-            <button type="submit" class="btn btn-success" ng-click="join(roomId)" ng-disabled="!roomId || joining">
+            <button type="submit" class="btn btn-success" ng-click="join(roomId)" ng-disabled="!roomId || joining" autofocus>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                     ng-show="joining"></span>
                 加入房间

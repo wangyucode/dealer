@@ -1,18 +1,93 @@
 <div class="container d-flex flex-column align-items-center">
-    <h5 class="text-center">房间号：<strong class="text-primary larger-text">{{roomId}}</strong></h5>
-    <h5 class="text-center">你是：<strong class="text-primary larger-text">{{userId}}</strong>号玩家<span ng-if="host" class="text-success">（房主）</span></h5>
+
+    <h5>房间号：<span class="text-primary larger-text">{{roomId}}</span></h5>
+    <h5>你是：<span class="text-primary larger-text">{{userId}}</span>号玩家<span ng-if="host"
+            class="text-success">（房主）</span>
+    </h5>
 
     <ul class="play-info">
         <li>{{message}}</li>
+        <li ng-if="!word">最少开始人数为：<span class="text-primary larger-text">{{min}}</span></li>
+        <li ng-if="word">请{{first}}号玩家先发言</li>
+        <li>请按玩家序号发言。</li>
         <li>每轮结束后，请房主选择被投出的玩家。</li>
         <li>游戏会自动判断胜负。</li>
     </ul>
 
     <div class="d-flex flex-row players col-md-6 flex-wrap">
-        <div ng-repeat="user in users" class="player rounded-lg">
+        <div class="player rounded-lg" ng-class="{selected: user.id == selected, out: user.status}"
+            ng-repeat="user in users" ng-click="onSelectUser(user.id)">
             {{user.id}}
+            <img class="out-img" ng-if="user.status" src="/assets/out.png"></img>
         </div>
     </div>
 
-    <button ng-if="host && !started" class="btn btn-success btn-lg">开始游戏</button>
+    <button id="btn-out-player" class="btn btn-danger btn-lg" ng-if="selected" ng-click="onOutPlayer()">
+        <span class="spinner-border spinner-border-sm" style="vertical-align: baseline;" role="status"
+            aria-hidden="true" ng-show="outing"></span>
+        投出{{selected}}号玩家
+    </button>
+
+    <button ng-if="host && !started" class="btn btn-success btn-lg" ng-disabled="cannotStart || starting"
+        data-toggle="modal" data-target="#startModal">
+        <span class="spinner-border spinner-border-sm" style="vertical-align: baseline;" role="status"
+            aria-hidden="true" ng-show="starting"></span>
+        开始游戏
+    </button>
+
+    <div ng-if="host" class="modal fade" id="startModal" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">请选择</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">总人数：<span class="text-primary larger-text">{{users.length}}</span>人</p>
+                    <p class="text-center">卧底：<span class="text-danger larger-text">{{undercover}}</span>人</p>
+                    <p class="text-center">平民：<span class="text-success larger-text">{{civilian}}</span>人</p>
+                    <div class="custom-control custom-switch text-center">
+                        <input type="checkbox" class="custom-control-input" ng-model="hasBlank"
+                            ng-change="onChangeNumber(hasBlank)" id="blankSwitch">
+                        <label class="custom-control-label" id="blankLabel" for="blankSwitch">白板：<span
+                                class="text-info larger-text">{{blank}}</span>人</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">再等等</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onStart()">开始</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p ng-if="word" class="text-info larger-text">{{word | showWord:show}}</p>
+
+    <button ng-if="word" class="btn btn-info btn-lg" ng-mousedown="onChangeShow(true)" ng-mouseup="onChangeShow(false)">
+        按下查看角色词语
+    </button>
+
+    <div class="modal fade" id="endModal" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{overMessage}}</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">卧底：<span class="text-danger larger-text">{{users | result:'U'}}</span></p>
+                    <p class="text-center">平民：<span class="text-success larger-text">{{users | result:'C'}}</span></p>
+                    <p class="text-center" ng-if="hasBlank">白板：<span
+                            class="text-info larger-text">{{users | result:'B'}}</span></p>
+                    <p class="text-center">存活：<span class="text-warning larger-text">{{users | result:'A'}}</span></p>
+                    <p class="text-center">出局：<span class="text-secondary larger-text">{{users | result:'O'}}</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onBack()">回到首页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
