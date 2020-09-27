@@ -15,62 +15,66 @@ angular.module('dealer.undercover')
     })
     .filter('result', function () {
         return function (users, show) {
-            var result = "";
+            var result;
             switch (show) {
                 case 'U':
                 case 'C':
                 case 'B':
                     result = users.filter(function (user) {
-                        return user.role == show;
+                        return user.role === show;
                     }).map(function (user) {
                         return user.id
                     }).join(',');
                     break;
                 case 'A':
                     result = users.filter(function (user) {
-                        user.role.status != -1;
+                        return user.status !== -1;
                     }).map(function (user) {
                         return user.id
                     }).join(',');
                     break;
                 case 'O':
                     result = users.filter(function (user) {
-                        user.role.status == -1;
+                        return user.status === -1;
                     }).map(function (user) {
                         return user.id
                     }).join(',');
                     break;
             }
+            if (!result) result = "无"
             return result;
         };
     })
     .controller('UndercoverPlayCtrl', ['$scope',
         '$location',
         '$interval',
+        '$timeout',
         '$http',
         'serverURL',
         'initData',
-        function ($scope, $location, $interval, $http, serverURL, initData) {
+        function ($scope, $location, $interval, $timeout, $http, serverURL, initData) {
             $scope.roomId = initData.roomId;
             $scope.userId = initData.userId;
             $scope.users = [];
             $scope.host = $location.search().host;
             $scope.message = "请房主等待所有玩家加入后点击“开始游戏”"
             $scope.cannotStart = true;
-            $scope.hasBlank = false;
+            $scope.hasBlank = false; //only host
             $scope.undercover = 0;
             $scope.min = 4;
             $scope.total = 0;
             $scope.civilian = 0;
             $scope.blank = 0;
             $scope.word = null;
-            $scope.started = false;
+            $scope.started = false; //only host
             $scope.overMessage = "";
 
             $scope.selected = 0;
 
             var userUpdateTime = 0
             var roleUpdateTime = 0
+
+            var heartbeatTime = 3000;
 
             var heartbeatTimer;
 
@@ -93,35 +97,59 @@ angular.module('dealer.undercover')
                     $scope.total = $scope.users.length
                     $scope.cannotStart = $scope.total < $scope.min;
                     userUpdateTime = room.lastUserTime;
-                    $scope.onChangeNumber($scope.hasBlank);
+
                     checkEndGame();
                 });
             }
 
 
             function checkEndGame() {
-                if ($scope.started) {
-                    if ($scope.civilian + $scope.blank <= $scope.undercover) {
+                if ($scope.word) {
+                    var notOutPlayer = $scope.users.filter(function (user) {
+                        return user.status != -1;
+                    });
+
+                    var notOutUndercovers = notOutPlayer.filter(function (user) {
+                        return user.role === "U";
+                    });
+
+                    var notOutCivilian = notOutPlayer.filter(function (user) {
+                        return user.role === "C";
+                    });
+
+                    var notOutBlank = notOutPlayer.filter(function (user) {
+                        return user.role === "B";
+                    });
+
+                    if (notOutCivilian.length + notOutBlank.length <= notOutUndercovers.length) {
+                        
+
                         gameover("卧底胜利！");
-                    } else {
-                        var notOutUndercovers = $scope.users.filter(function (user) {
-                            return user.role = "U" && user.status != -1
-                        });
-                        if (notOutUndercovers.length == 0) {
-                            gameover("平民胜利！");
-                        }
+                    } else if (notOutUndercovers.length === 0) {
+                        gameover("平民胜利！");
                     }
                 }
             }
 
             function gameover(message) {
                 console.log(message)
-                $interval.cancel(heartbeatTimer);
-                $http.get(serverURL + "/dealer/close", { params: { roomId: $scope.roomId } }).then(function (response) {
-                    console.log("close->", response);
-                });
+                $scope.uWord = $scope.users.find(function (user) {
+                    return user.role === "U";
+                }).word;
+                $scope.cWord = $scope.users.find(function (user) {
+                    return user.role === "C";
+                }).word;
                 $scope.overMessage = message;
                 $('#endModal').modal('show');
+
+                $interval.cancel(heartbeatTimer);
+                if ($scope.host) {
+                    $timeout(function () {
+                        $http.get(serverURL + "/dealer/close", { params: { roomId: $scope.roomId } }).then(function (response) {
+                            console.log("close->", response);
+                        });
+                    }, heartbeatTime * 2 + 100);
+                }
             }
 
             function undateWord() {
@@ -130,6 +158,10 @@ angular.module('dealer.undercover')
                     $scope.word = response.data.word;
                     $scope.first = response.data.first;
                     roleUpdateTime = response.data.lastRoleTime
+                    $scope.undercover = response.data.u;
+                    $scope.civilian = response.data.c;
+                    $scope.blank = response.data.b;
+                    $scope.message = "游戏已开始：" + $scope.civilian + "平民，" + $scope.undercover + "卧底，" + $scope.blank + "白板。"
                 });
             }
 
@@ -148,6 +180,7 @@ angular.module('dealer.undercover')
                     $scope.outing = false;
                     if (response.status == 200) {
                         $scope.selected = 0;
+                        updateUsers();
                     }
                 });
             }
@@ -161,7 +194,7 @@ angular.module('dealer.undercover')
                     $scope.starting = false;
                     if (response.status == 200) {
                         $scope.started = true;
-                        $scope.message = "游戏已开始：" + $scope.civilian + "平民，" + $scope.undercover + "卧底，" + $scope.blank + "白板。"
+                        undateWord();
                     }
                 });
             }
@@ -170,9 +203,12 @@ angular.module('dealer.undercover')
                 $scope.show = show;
             }
 
+            /**
+             * only host
+             * @param {false} hasBlank 
+             */
             $scope.onChangeNumber = function (hasBlank) {
-                console.log("onChangeNumber", hasBlank);
-                $scope.hasBlank = hasBlank;
+                if (hasBlank !== undefined) $scope.hasBlank = hasBlank;
                 if ($scope.total < 6) {
                     $scope.undercover = 1;
                     $scope.blank = $scope.hasBlank ? 1 : 0;
@@ -199,6 +235,7 @@ angular.module('dealer.undercover')
             if (!$scope.roomId) {
                 $location.path("/")
             } else {
-                heartbeatTimer = $interval(heartbeat, 1000);
+                updateUsers();
+                heartbeatTimer = $interval(heartbeat, heartbeatTime);
             }
         }]);
