@@ -11,6 +11,7 @@
     "angular-route": "^1.7.5"
   },
   "devDependencies": {
+    "@types/angularjs": "^1.5.14-alpha",
     "angular-mocks": "^1.7.5",
     "cpx": "^1.5.0",
     "http-server": "^0.11.1",
@@ -19,13 +20,17 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.2",
-    "protractor": "^5.4.1"
+    "npm-run-all": "^4.1.5",
+    "protractor": "^5.4.1",
+    "typescript": "^4.0.3"
   },
   "scripts": {
     "update-deps": "npm update",
-    "copy-libs": "cpx \"node_modules/{angular,angular-*}/**/*\" app/lib -C",
-    "start": "http-server -p 9000 -c-1 ./app",
-    "pretest": "npm install",
+    "copy-libs": "cpx \"node_modules/{angular,angular-*}/**/*\" app/dealer/lib -C",
+    "prestart": "npm run copy-libs",
+    "start-tsc": "tsc -w",
+    "start-server": "http-server -p 9000 -c-1 ./app",
+    "start": "npm-run-all -p start-tsc start-server",
     "test": "karma start karma.conf.js",
     "test-single-run": "npm test -- --single-run",
     "preupdate-webdriver": "npm install",

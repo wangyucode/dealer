@@ -1,12 +1,16 @@
 'use strict';
-var UndercoverRouteConfig = /** @class */ (function () {
+
+class UndercoverRouteConfig {
+
     //static $inject = ['$routeProvider'];
-    function UndercoverRouteConfig($routeProvider) {
+
+    constructor($routeProvider) {
         $routeProvider.when('/undercover', {
             templateUrl: 'undercover/undercover.html'
         });
     }
-    return UndercoverRouteConfig;
-}());
+}
+
 angular.module('dealer.undercover', ['ngRoute', 'dealer.directive.createJoinRoom', 'dealer.services'])
     .config(UndercoverRouteConfig);
+
