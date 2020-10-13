@@ -1,4 +1,3 @@
-'use strict';
 var RouteConfig = /** @class */ (function () {
     function RouteConfig($locationProvider, $routeProvider) {
         $locationProvider.hashPrefix('!');

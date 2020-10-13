@@ -1,10 +1,8 @@
-'use strict';
-
 class RouteConfig {
 
   static $inject = ['$locationProvider', '$routeProvider'];
 
-  constructor($locationProvider: angular.ILocationProvider, $routeProvider: any) {
+  constructor($locationProvider: angular.ILocationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!');
     $routeProvider.otherwise({ redirectTo: '/undercover' });
   }

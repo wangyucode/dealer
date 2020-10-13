@@ -1,8 +1,6 @@
-'use strict';
-
 class UndercoverRouteConfig {
 
-    //static $inject = ['$routeProvider'];
+    static $inject = ['$routeProvider'];
 
     constructor($routeProvider) {
         $routeProvider.when('/undercover', {
