@@ -7,5 +7,7 @@ class UndercoverRouteConfig {
     }
 }
 
-angular.module('dealer.undercover', ['ngRoute', 'dealer.directive.createJoinRoom', 'dealer.services'])
+angular.module('dealer.undercover', ['ngRoute', 'dealer.services'])
+    .directive('createJoinRoom', CreateJoinRoomDirective)
+    .controller('CreateJoinRoomCtrl', CreateJoinRoomController)
     .config(UndercoverRouteConfig);

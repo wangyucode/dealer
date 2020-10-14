@@ -1,0 +1,27 @@
+<div class="modal fade" id="startModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">请选择</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">总人数：<span class="text-primary larger-text">{{total}}</span>人</p>
+                <p class="text-center">卧底：<span class="text-danger larger-text">{{undercover}}</span>人</p>
+                <p class="text-center">平民：<span class="text-success larger-text">{{civilian}}</span>人</p>
+                <div class="custom-control custom-switch text-center">
+                    <input type="checkbox" class="custom-control-input" ng-model="hasBlank"
+                           ng-change="onChangeNumber(hasBlank)" id="blankSwitch">
+                    <label class="custom-control-label" id="blankLabel" for="blankSwitch">白板：<span
+                            class="text-info larger-text">{{blank}}</span>人</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">再等等</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onStart()">开始</button>
+            </div>
+        </div>
+    </div>
+</div>

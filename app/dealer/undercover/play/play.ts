@@ -52,8 +52,6 @@ const ResultFilter = function () {
 };
 
 class UndercoverPlayController {
-    static $inject = ['$scope', '$location', '$interval', '$timeout', '$http', 'serverURL', 'initData'];
-
     constructor($scope, $location, $interval, $timeout, $http, serverURL, initData) {
         $scope.roomId = initData.roomId;
         $scope.userId = initData.userId;
@@ -63,7 +61,7 @@ class UndercoverPlayController {
         $scope.cannotStart = true;
         $scope.hasBlank = false; //only host
         $scope.undercover = 0;
-        $scope.min = 4;
+        $scope.min = 1;
         $scope.total = 0;
         $scope.civilian = 0;
         $scope.blank = 0;
@@ -86,7 +84,7 @@ class UndercoverPlayController {
                 if (response.data == 1) {
                     updateUsers();
                 } else if (response.data == 2) {
-                    undateWord();
+                    updateWord();
                 }
             });
         }
@@ -96,7 +94,7 @@ class UndercoverPlayController {
                 console.log("updateUsers->", response);
                 var room = response.data;
                 $scope.users = room.users;
-                $scope.total = $scope.users.length
+                $scope.total = $scope.users.length;
                 $scope.cannotStart = $scope.total < $scope.min;
                 userUpdateTime = room.lastUserTime;
 
@@ -124,17 +122,15 @@ class UndercoverPlayController {
                 });
 
                 if (notOutCivilian.length + notOutBlank.length <= notOutUndercovers.length) {
-
-
-                    gameover("卧底胜利！");
+                    gameOver("卧底胜利！");
                 } else if (notOutUndercovers.length === 0) {
-                    gameover("平民胜利！");
+                    gameOver("平民胜利！");
                 }
             }
         }
 
-        function gameover(message) {
-            console.log(message)
+        function gameOver(message) {
+            console.log(message);
             $scope.uWord = $scope.users.find(function (user) {
                 return user.role === "U";
             }).word;
@@ -155,12 +151,13 @@ class UndercoverPlayController {
             }
         }
 
-        function undateWord() {
+        function updateWord() {
             $http.get(serverURL + "/dealer/word", { params: { roomId: $scope.roomId, userId: $scope.userId } }).then(function (response) {
-                console.log("undateWord->", response);
+                console.log("updateWord->", response);
+                $scope.started = true;
                 $scope.word = response.data.word;
                 $scope.first = response.data.first;
-                roleUpdateTime = response.data.lastRoleTime
+                roleUpdateTime = response.data.lastRoleTime;
                 $scope.undercover = response.data.u;
                 $scope.civilian = response.data.c;
                 $scope.blank = response.data.b;
@@ -170,11 +167,11 @@ class UndercoverPlayController {
 
         $scope.onSelectUser = function (id) {
             if ($scope.host && $scope.started) $scope.selected = id;
-        }
+        };
 
         $scope.onBack = function () {
             $location.path("/");
-        }
+        };
 
         $scope.onOutPlayer = function () {
             $scope.outing = true;
@@ -186,29 +183,15 @@ class UndercoverPlayController {
                     updateUsers();
                 }
             });
-        }
-
-        $scope.onStart = function () {
-            $scope.starting = true;
-            var roles = "U-" + $scope.undercover + ",C-" + $scope.civilian;
-            if ($scope.hasBlank) roles += ",B-" + $scope.blank;
-            $http.get(serverURL + "/dealer/start", { params: { id: $scope.roomId, roles: roles } }).then(function (response) {
-                console.log("start->", response);
-                $scope.starting = false;
-                if (response.status == 200) {
-                    $scope.started = true;
-                    undateWord();
-                }
-            });
-        }
+        };
 
         $scope.onChangeShow = function (show) {
             $scope.show = show;
-        }
+        };
 
         /**
          * only host
-         * @param {false} hasBlank 
+         * @param hasBlank
          */
         $scope.onChangeNumber = function (hasBlank) {
             if (hasBlank !== undefined) $scope.hasBlank = hasBlank;
@@ -232,8 +215,7 @@ class UndercoverPlayController {
                 $scope.blank = $scope.hasBlank ? 3 : 0;
             }
             $scope.civilian = $scope.total - $scope.undercover - $scope.blank;
-        }
-
+        };
 
         if (!$scope.roomId) {
             $location.path("/")
@@ -242,11 +224,13 @@ class UndercoverPlayController {
             heartbeatTimer = $interval(heartbeat, heartbeatTime);
         }
     }
-
 }
 
 angular.module('dealer.undercover')
     .config(UndercoverPlayRouteConfig)
+    .directive('playInfo', PlayInfoDirective)
+    .directive('startModal', StartModalDirective)
     .filter('showWord', [ShowWordFilter])
     .filter('result', [ResultFilter])
+    .controller('StartModalCtrl', StartModalController)
     .controller('UndercoverPlayCtrl', UndercoverPlayController);

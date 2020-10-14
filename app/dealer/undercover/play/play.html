@@ -1,24 +1,12 @@
 <div class="container d-flex flex-column align-items-center">
 
-    <h5>房间号：<span class="text-primary larger-text">{{roomId}}</span></h5>
-    <h5>你是：<span class="text-primary larger-text">{{userId}}</span>号玩家<span ng-if="host"
-            class="text-success">（房主）</span>
-    </h5>
-
-    <ul class="play-info">
-        <li>{{message}}</li>
-        <li ng-if="!word">最少开始人数为：<span class="text-primary larger-text">{{min}}</span></li>
-        <li ng-if="word">请{{first}}号玩家先发言</li>
-        <li>请按玩家序号发言。</li>
-        <li>每轮结束后，请房主选择被投出的玩家。</li>
-        <li>游戏会自动判断胜负。</li>
-    </ul>
+    <play-info></play-info>
 
     <div class="d-flex flex-row players col-md-6 flex-wrap">
         <div class="player rounded-lg" ng-class="{selected: user.id == selected, out: user.status}"
             ng-repeat="user in users" ng-click="onSelectUser(user.id)">
             {{user.id}}
-            <img class="out-img" ng-if="user.status" src="assets/out.png"></img>
+            <img class="out-img" ng-if="user.status" src="assets/out.png"/>
         </div>
     </div>
 
@@ -35,33 +23,7 @@
         开始游戏
     </button>
 
-    <div ng-if="host" class="modal fade" id="startModal" data-backdrop="static" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">请选择</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="text-center">总人数：<span class="text-primary larger-text">{{users.length}}</span>人</p>
-                    <p class="text-center">卧底：<span class="text-danger larger-text">{{undercover}}</span>人</p>
-                    <p class="text-center">平民：<span class="text-success larger-text">{{civilian}}</span>人</p>
-                    <div class="custom-control custom-switch text-center">
-                        <input type="checkbox" class="custom-control-input" ng-model="hasBlank"
-                            ng-change="onChangeNumber(hasBlank)" id="blankSwitch">
-                        <label class="custom-control-label" id="blankLabel" for="blankSwitch">白板：<span
-                                class="text-info larger-text">{{blank}}</span>人</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">再等等</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onStart()">开始</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <start-modal ng-if="host"></start-modal>
 
     <p ng-if="word" class="text-info larger-text">{{word | showWord:show}}</p>
 

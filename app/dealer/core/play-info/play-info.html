@@ -1,0 +1,15 @@
+<h5>房间号：<span class="text-primary larger-text">{{roomId}}</span></h5>
+<h5>你是：
+    <span class="text-primary larger-text">{{userId}}</span>
+    号玩家
+    <span ng-if="host" class="text-success">（房主）</span>
+</h5>
+
+<ul class="play-info">
+    <li>{{message}}</li>
+    <li ng-if="!word">最少开始人数为：<span class="text-primary larger-text">{{min}}</span></li>
+    <li ng-if="word">请{{first}}号玩家先发言</li>
+    <li>请按玩家序号发言。</li>
+    <li>每轮结束后，请房主选择被投出的玩家。</li>
+    <li>游戏会自动判断胜负。</li>
+</ul>

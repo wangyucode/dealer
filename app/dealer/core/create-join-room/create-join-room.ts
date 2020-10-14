@@ -43,6 +43,3 @@ class CreateJoinRoomController {
     }
 }
 
-angular.module('dealer.directive.createJoinRoom', [])
-    .directive('createJoinRoom', CreateJoinRoomDirective)
-    .controller('CreateJoinRoomCtrl', CreateJoinRoomController);
