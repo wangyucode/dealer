@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "dealer",
   "private": true,
   "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "description": "A web app for dealing cards of social games. such as 'Dice', '狼人杀', '谁是卧底', etc.",
+  "repository": "https://github.com/wangyucode/dealer",
   "license": "MIT",
   "dependencies": {
     "angular": "^1.7.5",
@@ -11,7 +11,8 @@
     "angular-route": "^1.7.5"
   },
   "devDependencies": {
-    "@types/angularjs": "^1.5.14-alpha",
+    "@types/angular": "^1.7.3",
+    "@types/angular-route": "^1.7.1",
     "@types/jquery": "^3.5.3",
     "angular-mocks": "^1.7.5",
     "cpx": "^1.5.0",

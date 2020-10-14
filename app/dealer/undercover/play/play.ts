@@ -16,7 +16,7 @@ const ShowWordFilter = function () {
     return function (word: String, show: Boolean): String {
         return show ? word : "****";
     }
-}
+};
 
 const ResultFilter = function () {
     return function (users, show: String): String {
@@ -46,10 +46,10 @@ const ResultFilter = function () {
                 }).join(',');
                 break;
         }
-        if (!result) result = "无"
+        if (!result) result = "无";
         return result;
     }
-}
+};
 
 class UndercoverPlayController {
     static $inject = ['$scope', '$location', '$interval', '$timeout', '$http', 'serverURL', 'initData'];
@@ -59,7 +59,7 @@ class UndercoverPlayController {
         $scope.userId = initData.userId;
         $scope.users = [];
         $scope.host = $location.search().host;
-        $scope.message = "请房主等待所有玩家加入后点击“开始游戏”"
+        $scope.message = "请房主等待所有玩家加入后点击“开始游戏”";
         $scope.cannotStart = true;
         $scope.hasBlank = false; //only host
         $scope.undercover = 0;
@@ -73,8 +73,8 @@ class UndercoverPlayController {
 
         $scope.selected = 0;
 
-        var userUpdateTime = 0
-        var roleUpdateTime = 0
+        var userUpdateTime = 0;
+        var roleUpdateTime = 0;
 
         var heartbeatTime = 3000;
 

@@ -1,9 +1,16 @@
 {
-    "include": [
-        "app/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
+  "compilerOptions": {
+    "types": [
+      "angular",
+      "jquery",
+      "angular-route"
     ]
+  },
+  "include": [
+    "app/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

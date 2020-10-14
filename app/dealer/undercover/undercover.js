@@ -4,7 +4,6 @@ var UndercoverRouteConfig = /** @class */ (function () {
             templateUrl: 'undercover/undercover.html'
         });
     }
-    UndercoverRouteConfig.$inject = ['$routeProvider'];
     return UndercoverRouteConfig;
 }());
 angular.module('dealer.undercover', ['ngRoute', 'dealer.directive.createJoinRoom', 'dealer.services'])

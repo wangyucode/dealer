@@ -39,7 +39,6 @@ var CreateJoinRoomController = /** @class */ (function () {
             });
         };
     }
-    CreateJoinRoomController.$inject = ['$scope', '$location', '$http', 'serverURL', 'initData'];
     return CreateJoinRoomController;
 }());
 angular.module('dealer.directive.createJoinRoom', [])

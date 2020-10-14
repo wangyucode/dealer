@@ -3,7 +3,6 @@ var RouteConfig = /** @class */ (function () {
         $locationProvider.hashPrefix('!');
         $routeProvider.otherwise({ redirectTo: '/undercover' });
     }
-    RouteConfig.$inject = ['$locationProvider', '$routeProvider'];
     return RouteConfig;
 }());
 // Declare app level module which depends on views, and core components

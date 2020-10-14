@@ -4,11 +4,9 @@ const CreateJoinRoomDirective = function (): angular.IDirective {
         templateUrl: 'core/create-join-room/create-join-room.html',
         controller: 'CreateJoinRoomCtrl'
     }
-}
+};
 
 class CreateJoinRoomController {
-
-    static $inject = ['$scope', '$location', '$http', 'serverURL', 'initData'];
 
     constructor($scope, $location, $http, serverURL, initData) {
         $scope.create = function () {
@@ -16,8 +14,8 @@ class CreateJoinRoomController {
             $http.get(serverURL + "/dealer/createRoom").then(function (response) {
                 console.log(response);
                 $scope.creating = false;
-                initData.roomId = response.data.data.roomId
-                initData.userId = response.data.data.id
+                initData.roomId = response.data.data.roomId;
+                initData.userId = response.data.data.id;
                 $location.path("/undercover/play").search({ "host": 1 });
             }, function (reason) {
                 $scope.creating = false;
@@ -33,8 +31,8 @@ class CreateJoinRoomController {
                 if (response.data.error) {
                     $scope.error = response.data.error;
                 } else {
-                    initData.roomId = response.data.data.roomId
-                    initData.userId = response.data.data.id
+                    initData.roomId = response.data.data.roomId;
+                    initData.userId = response.data.data.id;
                     $location.path("/undercover/play");
                 }
             }, function (reason) {
