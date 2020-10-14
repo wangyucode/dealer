@@ -2,9 +2,7 @@
 
 class UndercoverPlayRouteConfig {
 
-    static $inject = ['$routeProvider'];
-
-    constructor($routeProvider) {
+    constructor($routeProvider: angular.route.IRouteProvider) {
         $routeProvider.when('/undercover/play', {
             templateUrl: 'undercover/play/play.html',
             controller: 'UndercoverPlayCtrl'
@@ -19,7 +17,7 @@ const ShowWordFilter = function () {
 };
 
 const ResultFilter = function () {
-    return function (users, show: String): String {
+    return function (users: Array<User>, show: String): String {
         var result;
         switch (show) {
             case 'U':
@@ -230,6 +228,7 @@ angular.module('dealer.undercover')
     .config(UndercoverPlayRouteConfig)
     .directive('playInfo', PlayInfoDirective)
     .directive('startModal', StartModalDirective)
+    .directive('endModal', EndModalDirective)
     .filter('showWord', [ShowWordFilter])
     .filter('result', [ResultFilter])
     .controller('StartModalCtrl', StartModalController)

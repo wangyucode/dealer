@@ -31,24 +31,6 @@
         按下查看角色词语
     </button>
 
-    <div class="modal fade" id="endModal" data-backdrop="static" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{overMessage}}</h5>
-                </div>
-                <div class="modal-body">
-                    <p class="text-center">卧底（{{uWord}}）：<span class="text-danger larger-text">{{users | result:'U'}}</span></p>
-                    <p class="text-center">平民（{{cWord}}）：<span class="text-success larger-text">{{users | result:'C'}}</span></p>
-                    <p class="text-center">白板：<span class="text-info larger-text">{{users | result:'B'}}</span></p>
-                    <p class="text-center">存活：<span class="text-warning larger-text">{{users | result:'A'}}</span></p>
-                    <p class="text-center">出局：<span class="text-secondary larger-text">{{users | result:'O'}}</span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onBack()">回到首页</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <end-modal></end-modal>
 
 </div>
