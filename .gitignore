@@ -1,8 +1,7 @@
 logs/*
 !.gitkeep
 node_modules/
-app/dealer/**/*.js
-app/dealer/lib/
+dist
 tmp
 .DS_Store
 .idea

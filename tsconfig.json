@@ -3,10 +3,12 @@
     "types": [
       "angular",
       "angular-route"
-    ]
+    ],
+    "sourceMap": true,
+    "outDir": "dist",
   },
   "include": [
-    "app/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

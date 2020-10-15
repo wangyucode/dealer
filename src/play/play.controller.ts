@@ -1,55 +1,4 @@
-'use strict';
-
-class UndercoverPlayRouteConfig {
-
-    constructor($routeProvider: angular.route.IRouteProvider) {
-        $routeProvider.when('/undercover/play', {
-            templateUrl: 'undercover/play/play.html',
-            controller: 'UndercoverPlayCtrl'
-        });
-    }
-}
-
-const ShowWordFilter = function () {
-    return function (word: String, show: Boolean): String {
-        return show ? word : "****";
-    }
-};
-
-const ResultFilter = function () {
-    return function (users: Array<User>, show: String): String {
-        var result;
-        switch (show) {
-            case 'U':
-            case 'C':
-            case 'B':
-                result = users.filter(function (user) {
-                    return user.role === show;
-                }).map(function (user) {
-                    return user.id
-                }).join(',');
-                break;
-            case 'A':
-                result = users.filter(function (user) {
-                    return user.status !== -1;
-                }).map(function (user) {
-                    return user.id
-                }).join(',');
-                break;
-            case 'O':
-                result = users.filter(function (user) {
-                    return user.status === -1;
-                }).map(function (user) {
-                    return user.id
-                }).join(',');
-                break;
-        }
-        if (!result) result = "无";
-        return result;
-    }
-};
-
-class UndercoverPlayController {
+export default class UndercoverPlayController {
     constructor($scope, $location, $interval, $timeout, $http, serverURL, initData) {
         $scope.roomId = initData.roomId;
         $scope.userId = initData.userId;
@@ -223,13 +172,3 @@ class UndercoverPlayController {
         }
     }
 }
-
-angular.module('dealer.undercover')
-    .config(UndercoverPlayRouteConfig)
-    .directive('playInfo', PlayInfoDirective)
-    .directive('startModal', StartModalDirective)
-    .directive('endModal', EndModalDirective)
-    .filter('showWord', [ShowWordFilter])
-    .filter('result', [ResultFilter])
-    .controller('StartModalCtrl', StartModalController)
-    .controller('UndercoverPlayCtrl', UndercoverPlayController);
