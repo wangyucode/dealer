@@ -6,7 +6,7 @@
         <div class="player rounded-lg" ng-class="{selected: user.id == selected, out: user.status}"
             ng-repeat="user in users" ng-click="onSelectUser(user.id)">
             {{user.id}}
-            <img class="out-img" ng-if="user.status" src="assets/out.png"/>
+            <img class="out-img" ng-if="user.status" src="../assets/out.png" alt="out"/>
         </div>
     </div>
 

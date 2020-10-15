@@ -1,12 +1,4 @@
-const StartModalDirective = function (): angular.IDirective {
-    return {
-        restrict: 'E',
-        templateUrl: 'core/start-modal/start-modal.html',
-        controller: 'StartModalCtrl',
-    }
-};
-
-class StartModalController {
+export default class StartModalController {
 
     $scope: angular.IScope | any;
     $http: angular.IHttpService;

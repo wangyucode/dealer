@@ -1,16 +1,9 @@
 import * as angular from 'angular';
-import {CreateJoinRoomController, CreateJoinRoomDirective} from "../core/create-join-room/create-join-room";
+import {CreateJoinRoomController, CreateJoinRoomDirective} from "../core/component/create-join-room/create-join-room";
+import UndercoverRouteConfig from "./undercover.route";
 
-class UndercoverRouteConfig {
 
-    constructor($routeProvider) {
-        $routeProvider.when('/undercover', {
-            templateUrl: 'undercover/undercover.html'
-        });
-    }
-}
-
-angular.module(name, ['ngRoute', 'dealer.services'])
+angular.module('dealer.undercover', ['ngRoute', 'dealer.services'])
     .directive('createJoinRoom', CreateJoinRoomDirective)
     .controller('CreateJoinRoomCtrl', CreateJoinRoomController)
     .config(UndercoverRouteConfig);

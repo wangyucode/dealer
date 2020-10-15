@@ -1,13 +1,5 @@
 import * as angular from 'angular'
-import './app.css'
-
-class RouteConfig {
-
-    constructor($locationProvider: angular.ILocationProvider, $routeProvider: angular.route.IRouteProvider) {
-        $locationProvider.hashPrefix('!');
-        $routeProvider.otherwise({redirectTo: '/undercover'});
-    }
-}
+import RouteConfig from "./app.route";
 
 // Declare app level module which depends on views, and core components
 angular.module('dealer', [

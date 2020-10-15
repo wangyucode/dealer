@@ -1,7 +1,7 @@
 export const CreateJoinRoomDirective = function (): angular.IDirective {
     return {
         restrict: 'E',
-        templateUrl: 'core/create-join-room/create-join-room.html',
+        templateUrl: 'core/component/create-join-room/create-join-room.html',
         controller: 'CreateJoinRoomCtrl'
     }
 };
