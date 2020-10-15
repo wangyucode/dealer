@@ -5,7 +5,7 @@
       "angular-route"
     ],
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": [
     "src/**/*"
