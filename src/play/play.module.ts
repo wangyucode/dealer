@@ -1,5 +1,3 @@
-'use strict';
-
 class UndercoverPlayRouteConfig {
 
     constructor($routeProvider: angular.route.IRouteProvider) {

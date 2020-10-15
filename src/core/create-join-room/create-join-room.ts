@@ -1,4 +1,4 @@
-const CreateJoinRoomDirective = function (): angular.IDirective {
+export const CreateJoinRoomDirective = function (): angular.IDirective {
     return {
         restrict: 'E',
         templateUrl: 'core/create-join-room/create-join-room.html',
@@ -6,7 +6,7 @@ const CreateJoinRoomDirective = function (): angular.IDirective {
     }
 };
 
-class CreateJoinRoomController {
+export class CreateJoinRoomController {
 
     constructor($scope, $location, $http, serverURL, initData) {
         $scope.create = function () {

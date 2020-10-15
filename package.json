@@ -6,7 +6,7 @@
   "repository": "https://github.com/wangyucode/dealer",
   "license": "MIT",
   "dependencies": {
-    "angular": "^1.7.5",
+    "angular": "^1.8.1",
     "angular-loader": "^1.7.5",
     "angular-route": "^1.7.5"
   },
@@ -14,24 +14,27 @@
     "@types/angular": "^1.7.3",
     "@types/angular-route": "^1.7.1",
     "angular-mocks": "^1.7.5",
-    "cpx": "^1.5.0",
-    "http-server": "^0.11.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.0",
+    "html-webpack-plugin": "^4.5.0",
     "jasmine-core": "^3.3.0",
     "karma": "^3.1.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.2",
-    "npm-run-all": "^4.1.5",
     "protractor": "^5.4.1",
-    "typescript": "^4.0.3"
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.5",
+    "typescript": "^4.0.3",
+    "webpack": "^5.1.0",
+    "webpack-cli": "^4.0.0",
+    "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "update-deps": "npm update",
-    "copy-libs": "cpx \"node_modules/{angular,angular-*}/**/*\" app/dealer/lib -C",
-    "prestart": "npm run copy-libs",
+    "watch": "webpack --watch",
+    "build": "webpack",
     "start-tsc": "tsc -w",
-    "start-server": "http-server -p 9000 -c-1 ./app",
-    "start": "npm-run-all -p start-tsc start-server",
+    "start": "webpack serve",
     "test": "karma start karma.conf.js",
     "test-single-run": "npm test -- --single-run",
     "preupdate-webdriver": "npm install",
@@ -39,6 +42,6 @@
     "update-webdriver": "webdriver-manager update --gecko false",
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor e2e-tests/protractor.conf.js",
-    "update-index-async": "node --eval \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/lib/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=lib/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
+    "update-index-async": "node --eval \\\"var fs=require('fs'),indexFile='src/index-async.html',loaderFile='app/lib/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=lib/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\\\/\\\\/@@NG_LOADER_START@@[\\\\s\\\\S]*\\\\/\\\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\\\""
   }
 }

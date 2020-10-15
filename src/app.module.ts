@@ -1,3 +1,6 @@
+import * as angular from 'angular'
+import './app.css'
+
 class RouteConfig {
 
     constructor($locationProvider: angular.ILocationProvider, $routeProvider: angular.route.IRouteProvider) {
