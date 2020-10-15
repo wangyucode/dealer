@@ -1,3 +1,5 @@
+import './end-modal.html'
+
 export default function EndModalDirective(): angular.IDirective {
     return {
         restrict: 'E',

@@ -1,12 +1,4 @@
-export const CreateJoinRoomDirective = function (): angular.IDirective {
-    return {
-        restrict: 'E',
-        templateUrl: 'core/component/create-join-room/create-join-room.html',
-        controller: 'CreateJoinRoomCtrl'
-    }
-};
-
-export class CreateJoinRoomController {
+export default class RoomController {
 
     constructor($scope, $location, $http, serverURL, initData) {
         $scope.create = function () {
@@ -16,7 +8,7 @@ export class CreateJoinRoomController {
                 $scope.creating = false;
                 initData.roomId = response.data.data.roomId;
                 initData.userId = response.data.data.id;
-                $location.path("/undercover/play").search({ "host": 1 });
+                $location.path("/undercover/play").search({"host": 1});
             }, function (reason) {
                 $scope.creating = false;
                 $scope.error = reason.statusText || "连接服务器失败！";
@@ -25,7 +17,7 @@ export class CreateJoinRoomController {
 
         $scope.join = function (roomId) {
             $scope.joining = true;
-            $http.get(serverURL + "/dealer/joinRoom", { params: { id: roomId } }).then(function (response) {
+            $http.get(serverURL + "/dealer/joinRoom", {params: {id: roomId}}).then(function (response) {
                 console.log(response);
                 $scope.joining = false;
                 if (response.data.error) {
@@ -42,4 +34,3 @@ export class CreateJoinRoomController {
         };
     }
 }
-

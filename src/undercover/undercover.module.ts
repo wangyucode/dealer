@@ -1,9 +1,9 @@
 import * as angular from 'angular';
-import {CreateJoinRoomController, CreateJoinRoomDirective} from "../core/component/create-join-room/create-join-room";
 import UndercoverRouteConfig from "./undercover.route";
-
+import RoomDirective from "../core/component/room/room";
+import RoomController from "../core/component/room/room.controller";
 
 angular.module('dealer.undercover', ['ngRoute', 'dealer.services'])
-    .directive('createJoinRoom', CreateJoinRoomDirective)
-    .controller('CreateJoinRoomCtrl', CreateJoinRoomController)
+    .directive('createJoinRoom', RoomDirective)
+    .controller('CreateJoinRoomCtrl', RoomController)
     .config(UndercoverRouteConfig);

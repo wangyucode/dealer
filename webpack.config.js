@@ -37,6 +37,28 @@ module.exports = {
                 ],
             },
             {
+                test: /(?<!index|index-async)\.html$/i,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[path][name].[ext]",
+                            publicPath: "./",
+                            context: 'src'
+                        },
+                    },
+                    {
+                        loader: "extract-loader",
+                        options: {
+                            publicPath: "./",
+                        }
+                    },
+                    {
+                        loader: "html-loader",
+                    },
+                ],
+            },
+            {
                 test: /\.css$/,
                 use: [
                     'style-loader',
@@ -50,22 +72,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html'
         }),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from:"./core/**/*.html",
-                    context: path.resolve(__dirname, 'src')
-                },
-                {
-                    from:"./play/**/*.html",
-                    context: path.resolve(__dirname, 'src')
-                },
-                {
-                    from:"./undercover/**/*.html",
-                    context: path.resolve(__dirname, 'src')
-                }
-            ]
-        })
     ],
     externals: {
         angular: 'angular'

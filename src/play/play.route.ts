@@ -1,3 +1,5 @@
+import './play.html'
+
 export default class UndercoverPlayRouteConfig {
 
     constructor($routeProvider: angular.route.IRouteProvider) {

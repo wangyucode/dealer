@@ -1,3 +1,5 @@
+import './play-info.html'
+
 export default function PlayInfoDirective(): angular.IDirective {
     return {
         restrict: 'E',

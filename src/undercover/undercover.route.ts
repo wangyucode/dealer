@@ -1,3 +1,5 @@
+import "./undercover.html"
+
 export default class UndercoverRouteConfig {
 
     constructor($routeProvider) {

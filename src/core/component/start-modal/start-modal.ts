@@ -1,3 +1,5 @@
+import './start-modal.html'
+
 export default function StartModalDirective(): angular.IDirective {
     return {
         restrict: 'E',
@@ -5,5 +7,3 @@ export default function StartModalDirective(): angular.IDirective {
         controller: 'StartModalCtrl',
     }
 };
-
-
