@@ -1,0 +1,17 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "types" : [
+      "angular",
+      "angular-route",
+      "angular-mocks",
+      "jasmine"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

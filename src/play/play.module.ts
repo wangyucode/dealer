@@ -1,4 +1,4 @@
-import angular = require("angular");
+import * as angular from "angular";
 import UndercoverPlayRouteConfig from "./play.route";
 import UndercoverPlayController from "./play.controller";
 import ShowWordFilter from "../core/filter/show-word.filter";
@@ -9,7 +9,7 @@ import StartModalController from "../core/component/start-modal/start-modal.cont
 import EndModalDirective from "../core/component/end-modal/end-modal";
 
 
-angular.module('dealer.undercover')
+angular.module('dealer.play', ['ngRoute', 'dealer.services'])
     .config(UndercoverPlayRouteConfig)
     .directive('playInfo', PlayInfoDirective)
     .directive('startModal', StartModalDirective)

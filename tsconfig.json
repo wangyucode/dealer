@@ -2,7 +2,8 @@
   "compilerOptions": {
     "types": [
       "angular",
-      "angular-route"
+      "angular-route",
+      "jasmine"
     ],
     "sourceMap": true,
     "outDir": "dist"
