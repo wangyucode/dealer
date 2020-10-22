@@ -13,16 +13,17 @@ export default class StartModalController {
 
     onStart = () => {
         this.$scope.starting = true;
-        let roles = "U-" + this.$scope.undercover + ",C-" + this.$scope.civilian;
-        if (this.$scope.hasBlank) roles += ",B-" + this.$scope.blank;
+        let setting = "U-" + this.$scope.undercover + ",C-" + this.$scope.civilian;
+        if (this.$scope.hasBlank) setting += ",B-" + this.$scope.blank;
         this.$http.get(this.serverURL + "/dealer/start", {
             params: {
                 id: this.$scope.roomId,
-                roles: roles
+                type: 0,
+                setting
             }
         }).then((response) => {
             console.log("start->", response);
-            this.$scope.starting = false;
+            this.$scope.onStarted();
         });
     }
 }

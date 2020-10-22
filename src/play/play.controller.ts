@@ -1,5 +1,22 @@
+import {InitData, Users, User, UserWord} from "../types";
+import {IPromise} from "angular";
+
+
+const HEARTBEAT_TIME = 3000;
+
 export default class UndercoverPlayController {
-    constructor($scope, $location, $interval, $timeout, $http, serverURL, initData) {
+
+    private userUpdateTime = 0;
+    private roleUpdateTime = 0;
+    private heartbeatTimer: IPromise<any>;
+
+    constructor(private $scope: angular.IScope | any,
+                private $location: angular.ILocationService,
+                private $interval: angular.IIntervalService,
+                private $timeout: angular.ITimeoutService,
+                private $http: angular.IHttpService,
+                private serverURL: string,
+                private initData: InitData) {
         $scope.roomId = initData.roomId;
         $scope.userId = initData.userId;
         $scope.users = [];
@@ -8,167 +25,165 @@ export default class UndercoverPlayController {
         $scope.cannotStart = true;
         $scope.hasBlank = false; //only host
         $scope.undercover = 0;
-        $scope.min = 1;
+        $scope.min = 4;
         $scope.total = 0;
         $scope.civilian = 0;
         $scope.blank = 0;
         $scope.word = null;
         $scope.started = false; //only host
         $scope.overMessage = "";
-
         $scope.selected = 0;
+        $scope.onSelectUser = this.onSelectUser;
+        $scope.onBack = this.onBack;
+        $scope.onOutPlayer = this.onOutPlayer; //only host
+        $scope.onChangeShow = this.onChangeShow;
+        $scope.onChangeUserCount = this.onChangeUserCount; //only host
+        $scope.onStarted = this.updateWord;
 
-        var userUpdateTime = 0;
-        var roleUpdateTime = 0;
-
-        var heartbeatTime = 3000;
-
-        var heartbeatTimer;
-
-        function heartbeat() {
-            $http.get(serverURL + "/dealer/heartbeat", { params: { i: $scope.roomId, u: userUpdateTime, r: roleUpdateTime } }).then(function (response) {
-                console.log("heartbeat->", response.data);
-                if (response.data == 1) {
-                    updateUsers();
-                } else if (response.data == 2) {
-                    updateWord();
-                }
-            });
-        }
-
-        function updateUsers() {
-            $http.get(serverURL + "/dealer/users", { params: { id: $scope.roomId } }).then(function (response) {
-                console.log("updateUsers->", response);
-                var room = response.data;
-                $scope.users = room.users;
-                $scope.total = $scope.users.length;
-                $scope.cannotStart = $scope.total < $scope.min;
-                userUpdateTime = room.lastUserTime;
-
-                checkEndGame();
-            });
-        }
-
-
-        function checkEndGame() {
-            if ($scope.word) {
-                var notOutPlayer = $scope.users.filter(function (user) {
-                    return user.status != -1;
-                });
-
-                var notOutUndercovers = notOutPlayer.filter(function (user) {
-                    return user.role === "U";
-                });
-
-                var notOutCivilian = notOutPlayer.filter(function (user) {
-                    return user.role === "C";
-                });
-
-                var notOutBlank = notOutPlayer.filter(function (user) {
-                    return user.role === "B";
-                });
-
-                if (notOutCivilian.length + notOutBlank.length <= notOutUndercovers.length) {
-                    gameOver("卧底胜利！");
-                } else if (notOutUndercovers.length === 0) {
-                    gameOver("平民胜利！");
-                }
-            }
-        }
-
-        function gameOver(message) {
-            console.log(message);
-            $scope.uWord = $scope.users.find(function (user) {
-                return user.role === "U";
-            }).word;
-            $scope.cWord = $scope.users.find(function (user) {
-                return user.role === "C";
-            }).word;
-            $scope.overMessage = message;
-            // @ts-ignore
-            $('#endModal').modal('show');
-
-            $interval.cancel(heartbeatTimer);
-            if ($scope.host) {
-                $timeout(function () {
-                    $http.get(serverURL + "/dealer/close", { params: { roomId: $scope.roomId } }).then(function (response) {
-                        console.log("close->", response);
-                    });
-                }, heartbeatTime * 2 + 100);
-            }
-        }
-
-        function updateWord() {
-            $http.get(serverURL + "/dealer/word", { params: { roomId: $scope.roomId, userId: $scope.userId } }).then(function (response) {
-                console.log("updateWord->", response);
-                $scope.started = true;
-                $scope.word = response.data.word;
-                $scope.first = response.data.first;
-                roleUpdateTime = response.data.lastRoleTime;
-                $scope.undercover = response.data.u;
-                $scope.civilian = response.data.c;
-                $scope.blank = response.data.b;
-                $scope.message = "游戏已开始：" + $scope.civilian + "平民，" + $scope.undercover + "卧底，" + $scope.blank + "白板。"
-            });
-        }
-
-        $scope.onSelectUser = function (id) {
-            if ($scope.host && $scope.started) $scope.selected = id;
-        };
-
-        $scope.onBack = function () {
-            $location.path("/");
-        };
-
-        $scope.onOutPlayer = function () {
-            $scope.outing = true;
-            $http.get(serverURL + "/dealer/out", { params: { roomId: $scope.roomId, userId: $scope.selected } }).then(function (response) {
-                console.log("out->", response);
-                $scope.outing = false;
-                if (response.status == 200) {
-                    $scope.selected = 0;
-                    updateUsers();
-                }
-            });
-        };
-
-        $scope.onChangeShow = function (show) {
-            $scope.show = show;
-        };
-
-        /**
-         * only host
-         * @param hasBlank
-         */
-        $scope.onChangeNumber = function (hasBlank) {
-            if (hasBlank !== undefined) $scope.hasBlank = hasBlank;
-            if ($scope.total < 6) {
-                $scope.undercover = 1;
-                $scope.blank = $scope.hasBlank ? 1 : 0;
-            } else if ($scope.total < 9) {
-                $scope.undercover = 2;
-                $scope.blank = $scope.hasBlank ? 1 : 0;
-            } else if ($scope.total < 12) {
-                $scope.undercover = 2;
-                $scope.blank = $scope.hasBlank ? 2 : 0;
-            } else if ($scope.total < 15) {
-                $scope.undercover = 3;
-                $scope.blank = $scope.hasBlank ? 2 : 0;
-            } else if ($scope.total < 18) {
-                $scope.undercover = 4;
-                $scope.blank = $scope.hasBlank ? 3 : 0;
-            } else {
-                $scope.undercover = 5;
-                $scope.blank = $scope.hasBlank ? 3 : 0;
-            }
-            $scope.civilian = $scope.total - $scope.undercover - $scope.blank;
-        };
-
-        if (!$scope.roomId) {
-            $location.path("/")
+        if (!this.$scope.roomId) {
+            this.$location.path("/")
         } else {
-            updateUsers();
-            heartbeatTimer = $interval(heartbeat, heartbeatTime);
+            this.updateUsers();
+            this.heartbeatTimer = this.$interval(this.heartbeat, HEARTBEAT_TIME);
         }
     }
+
+    updateUsers(): IPromise<any> {
+        return this.$http.get(this.serverURL + "/dealer/users", {params: {id: this.$scope.roomId}}).then((response) => {
+            console.log("updateUsers->", response);
+            let usersWithUpdateTime = response.data as Users;
+            this.$scope.users = usersWithUpdateTime.users;
+            this.$scope.total = this.$scope.users.length;
+            this.$scope.cannotStart = this.$scope.total < this.$scope.min;
+            this.userUpdateTime = usersWithUpdateTime.lastUserTime;
+            this.onChangeUserCount(this.$scope.hasBlank);
+        });
+    }
+
+    updateWord = () => {
+        this.$http.get(this.serverURL + "/dealer/word", {
+            params: {
+                roomId: this.$scope.roomId,
+                userId: this.$scope.userId
+            }
+        }).then((response) => {
+            console.log("updateWord->", response);
+            let userWord = response.data as UserWord;
+            this.$scope.starting = false;
+            this.$scope.started = true;
+            this.$scope.word = userWord.word;
+            this.$scope.first = userWord.first;
+            this.roleUpdateTime = userWord.lastRoleTime;
+            this.$scope.undercover = userWord.u;
+            this.$scope.civilian = userWord.c;
+            this.$scope.blank = userWord.b;
+            this.$scope.message = `游戏已开始：${this.$scope.civilian}平民，${this.$scope.undercover}卧底，${this.$scope.blank}白板。`
+        });
+    };
+
+    gameOver(message: string) {
+        console.log(message);
+        this.$scope.uWord = this.$scope.users.find(function (user) {
+            return user.role === "U";
+        }).word;
+        this.$scope.cWord = this.$scope.users.find(function (user) {
+            return user.role === "C";
+        }).word;
+        this.$scope.overMessage = message;
+        // @ts-ignore
+        $('#endModal').modal('show');
+
+        this.$interval.cancel(this.heartbeatTimer);
+        if (this.$scope.host) {
+            this.$timeout(() => {
+                this.$http.get(this.serverURL + "/dealer/close", {params: {roomId: this.$scope.roomId}}).then(function (response) {
+                    console.log("close->", response);
+                });
+            }, HEARTBEAT_TIME * 2 + 100);
+        }
+    }
+
+    heartbeat = () => {
+        this.$http.get(this.serverURL + "/dealer/heartbeat", {
+            params: {
+                i: this.$scope.roomId,
+                u: this.userUpdateTime,
+                r: this.roleUpdateTime
+            }
+        }).then((response) => {
+            console.log("heartbeat->", response.data);
+            switch (response.data) {
+                case 1:
+                    this.updateUsers();
+                    break;
+                case 2:
+                    this.updateWord();
+                    break;
+                case 3:
+                    this.updateUsers().then(() => this.gameOver("卧底胜利！"));
+                    break;
+                case 4:
+                    this.updateUsers().then(() => this.gameOver("平民胜利！"));
+                    break;
+            }
+        });
+    };
+
+
+    onSelectUser = (id: number) => {
+        if (this.$scope.host && this.$scope.started) this.$scope.selected = id;
+    };
+
+    onBack = () => {
+        this.$location.path("/");
+    };
+
+    onOutPlayer = () => {
+        this.$scope.outing = true;
+        this.$http.get(this.serverURL + "/dealer/out", {
+            params: {
+                roomId: this.$scope.roomId,
+                userId: this.$scope.selected
+            }
+        }).then((response) => {
+            console.log("out->", response);
+            this.$scope.outing = false;
+            if (response.status == 200) {
+                this.$scope.selected = 0;
+                this.updateUsers();
+            }
+        });
+    };
+
+    onChangeShow = (show: boolean) => {
+        this.$scope.show = show;
+    };
+
+    /**
+     * host only
+     * @param hasBlank
+     */
+    onChangeUserCount = (hasBlank: boolean) => {
+        this.$scope.hasBlank = hasBlank;
+        if (this.$scope.total < 6) {
+            this.$scope.undercover = 1;
+            this.$scope.blank = this.$scope.hasBlank ? 1 : 0;
+        } else if (this.$scope.total < 9) {
+            this.$scope.undercover = 2;
+            this.$scope.blank = this.$scope.hasBlank ? 1 : 0;
+        } else if (this.$scope.total < 12) {
+            this.$scope.undercover = 2;
+            this.$scope.blank = this.$scope.hasBlank ? 2 : 0;
+        } else if (this.$scope.total < 15) {
+            this.$scope.undercover = 3;
+            this.$scope.blank = this.$scope.hasBlank ? 2 : 0;
+        } else if (this.$scope.total < 18) {
+            this.$scope.undercover = 4;
+            this.$scope.blank = this.$scope.hasBlank ? 3 : 0;
+        } else {
+            this.$scope.undercover = 5;
+            this.$scope.blank = this.$scope.hasBlank ? 3 : 0;
+        }
+        this.$scope.civilian = this.$scope.total - this.$scope.undercover - this.$scope.blank;
+    };
 }
