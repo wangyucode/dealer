@@ -28,8 +28,7 @@ jobs:
       - run: npm run build
       # Deploy
       - name: SFTP uploader
-
-      - uses: wangyucode/sftp-upload-action@v1
+        uses: wangyucode/sftp-upload-action@v1
         with:
           host: 'wycode.cn'
           port: 22 # optional, default is 22 
