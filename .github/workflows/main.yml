@@ -32,8 +32,8 @@ jobs:
         with:
           host: 'wycode.cn'
           port: 22 # optional, default is 22 
-          username: root # optional, default is root
-          password: 123 
+          username: ${{SERVER_USERNAME}} # optional, default is root
+          password: ${{SERVER_PASSWORD}} 
           localDir: './'
           remoteDir: '/test'
           dryRun: true # optional
