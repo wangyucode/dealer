@@ -34,8 +34,8 @@ jobs:
           port: 22 # optional, default is 22 
           username: ${{ secrets.SERVER_USERNAME }} # optional, default is root
           password: ${{ secrets.SERVER_PASSWORD }} 
-          localDir: './'
-          remoteDir: '/test'
+          localDir: 'dist'
+          remoteDir: '/var/www/dealer/'
           dryRun: true # optional
     
           
