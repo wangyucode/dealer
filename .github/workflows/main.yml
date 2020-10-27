@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }} 
           localDir: 'dist'
           remoteDir: '/var/www/dealer/'
-          dryRun: true # optional
+          dryRun: false # optional
     
           
       
