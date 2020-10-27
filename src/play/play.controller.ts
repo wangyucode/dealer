@@ -1,6 +1,5 @@
-import {InitData, Users, User, UserWord} from "../types";
 import {IPromise} from "angular";
-
+import {InitData} from "../services";
 
 const HEARTBEAT_TIME = 3000;
 
@@ -15,7 +14,6 @@ export default class UndercoverPlayController {
                 private $interval: angular.IIntervalService,
                 private $timeout: angular.ITimeoutService,
                 private $http: angular.IHttpService,
-                private serverURL: string,
                 private initData: InitData) {
         $scope.roomId = initData.roomId;
         $scope.userId = initData.userId;
@@ -49,7 +47,7 @@ export default class UndercoverPlayController {
     }
 
     updateUsers(): IPromise<any> {
-        return this.$http.get(this.serverURL + "/dealer/users", {params: {id: this.$scope.roomId}}).then((response) => {
+        return this.$http.get(SERVER_URL + "/dealer/users", {params: {id: this.$scope.roomId}}).then((response) => {
             console.log("updateUsers->", response);
             let usersWithUpdateTime = response.data as Users;
             this.$scope.users = usersWithUpdateTime.users;
@@ -61,7 +59,7 @@ export default class UndercoverPlayController {
     }
 
     updateWord = () => {
-        this.$http.get(this.serverURL + "/dealer/word", {
+        this.$http.get(SERVER_URL + "/dealer/word", {
             params: {
                 roomId: this.$scope.roomId,
                 userId: this.$scope.userId
@@ -96,7 +94,7 @@ export default class UndercoverPlayController {
         this.$interval.cancel(this.heartbeatTimer);
         if (this.$scope.host) {
             this.$timeout(() => {
-                this.$http.get(this.serverURL + "/dealer/close", {params: {roomId: this.$scope.roomId}}).then(function (response) {
+                this.$http.get(SERVER_URL + "/dealer/close", {params: {roomId: this.$scope.roomId}}).then(function (response) {
                     console.log("close->", response);
                 });
             }, HEARTBEAT_TIME * 2 + 100);
@@ -104,7 +102,7 @@ export default class UndercoverPlayController {
     }
 
     heartbeat = () => {
-        this.$http.get(this.serverURL + "/dealer/heartbeat", {
+        this.$http.get(SERVER_URL + "/dealer/heartbeat", {
             params: {
                 i: this.$scope.roomId,
                 u: this.userUpdateTime,
@@ -140,7 +138,7 @@ export default class UndercoverPlayController {
 
     onOutPlayer = () => {
         this.$scope.outing = true;
-        this.$http.get(this.serverURL + "/dealer/out", {
+        this.$http.get(SERVER_URL + "/dealer/out", {
             params: {
                 roomId: this.$scope.roomId,
                 userId: this.$scope.selected

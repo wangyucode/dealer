@@ -1,5 +1,3 @@
-import {User} from "../../types";
-
 export default function ResultFilter() {
     return function (users: Array<User>, show: String): String {
         let result;

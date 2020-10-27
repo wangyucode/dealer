@@ -1,20 +1,17 @@
-export interface User {
+declare var SERVER_URL: string;
+
+declare interface User {
     role: string;
     id: number;
     status: number;
 }
 
-export class InitData {
-    roomId: number = 0;
-    userId: number = 0;
-}
-
-export interface Users {
+declare interface Users {
     users: Array<User>;
     lastUserTime: number;
 }
 
-export interface UserWord {
+declare interface UserWord {
     word: string;
     first: number;
     u: string;
@@ -24,6 +21,6 @@ export interface UserWord {
 }
 
 
-export interface Users {
+declare interface Users {
     users: Array<User>;
 }

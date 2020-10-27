@@ -1,19 +1,11 @@
-dist: trusty
-
+branches:
+  only:
+    - master
 language: node_js
 node_js:
-  - 10
-
-addons:
-  chrome: stable
-
-cache:
-  directories:
-    - "$HOME/.npm"
-
-install:
-  - npm install
-
-script:
-  - npm run test-single-run -- --browsers ChromeHeadless
-  - (npm start > /dev/null &) && npm run protractor -- --capabilities.chromeOptions.args headless
+  - "10"
+script: npm run build:prod
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: node deploy/sftp.js $SERVER_PASSWORD

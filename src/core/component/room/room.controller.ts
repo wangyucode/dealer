@@ -1,9 +1,10 @@
 export default class RoomController {
 
-    constructor($scope, $location, $http, serverURL, initData) {
+    constructor($scope, $location, $http, initData) {
+        console.log("sdfasdf", SERVER_URL);
         $scope.create = function () {
             $scope.creating = true;
-            $http.get(serverURL + "/dealer/createRoom").then(function (response) {
+            $http.get(SERVER_URL + "/dealer/createRoom").then(function (response) {
                 console.log(response);
                 $scope.creating = false;
                 initData.roomId = response.data.data.roomId;
@@ -17,7 +18,7 @@ export default class RoomController {
 
         $scope.join = function (roomId) {
             $scope.joining = true;
-            $http.get(serverURL + "/dealer/joinRoom", {params: {id: roomId}}).then(function (response) {
+            $http.get(SERVER_URL + "/dealer/joinRoom", {params: {id: roomId}}).then(function (response) {
                 console.log(response);
                 $scope.joining = false;
                 if (response.data.error) {
