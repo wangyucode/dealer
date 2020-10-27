@@ -31,19 +31,12 @@ jobs:
 
       - uses: wangyucode/sftp-upload-action@v1
         with:
-        # 
           host: 'wycode.cn'
-          # 
-          port: 22 # optional, default is 22
-          # 
+          port: 22 # optional, default is 22 
           username: root # optional, default is root
-          # 
-          password: 123
-          # 
+          password: 123 
           localDir: './'
-          # 
           remoteDir: '/test'
-          # 
           dryRun: true # optional
     
           
