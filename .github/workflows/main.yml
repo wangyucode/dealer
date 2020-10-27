@@ -27,7 +27,10 @@ jobs:
       - run: npm install
       - run: npm run build
       # Deploy
-      - run: node deploy/sftp.js ${{SERVER_PASSWORD}}
+      - name: Deploy
+        env:
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: node deploy/sftp.js
     
           
       
