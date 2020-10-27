@@ -3,6 +3,8 @@ console.log(process.argv);
 
 const { deploy } = require('sftp-sync-deploy');
 
+console.log("env", process.env);
+
 let config = {
   host: 'wycode.cn', // Required.
   port: 22, // Optional, Default to 22.
