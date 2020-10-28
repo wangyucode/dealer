@@ -1,5 +1,5 @@
-import {IPromise} from "angular";
-import {InitData} from "../services";
+import { IPromise } from "angular";
+import { InitData } from "../undercover/undercover.module";
 
 const HEARTBEAT_TIME = 3000;
 
@@ -10,11 +10,11 @@ export default class UndercoverPlayController {
     private heartbeatTimer: IPromise<any>;
 
     constructor(private $scope: angular.IScope | any,
-                private $location: angular.ILocationService,
-                private $interval: angular.IIntervalService,
-                private $timeout: angular.ITimeoutService,
-                private $http: angular.IHttpService,
-                private initData: InitData) {
+        private $location: angular.ILocationService,
+        private $interval: angular.IIntervalService,
+        private $timeout: angular.ITimeoutService,
+        private $http: angular.IHttpService,
+        private initData: InitData) {
         $scope.roomId = initData.roomId;
         $scope.userId = initData.userId;
         $scope.users = [];
@@ -44,10 +44,17 @@ export default class UndercoverPlayController {
             this.updateUsers();
             this.heartbeatTimer = this.$interval(this.heartbeat, HEARTBEAT_TIME);
         }
+        // For ngView specifically, you are able to know when the content gets loaded through the scope event $viewContentLoaded:
+        $scope.$on('$destroy', this.onDestroy);
     }
 
+    onDestroy = () => {
+        this.$interval.cancel(this.heartbeatTimer);
+    }
+
+
     updateUsers(): IPromise<any> {
-        return this.$http.get(SERVER_URL + "/dealer/users", {params: {id: this.$scope.roomId}}).then((response) => {
+        return this.$http.get(SERVER_URL + "/dealer/users", { params: { id: this.$scope.roomId } }).then((response) => {
             console.log("updateUsers->", response);
             let usersWithUpdateTime = response.data as Users;
             this.$scope.users = usersWithUpdateTime.users;
@@ -94,7 +101,7 @@ export default class UndercoverPlayController {
         this.$interval.cancel(this.heartbeatTimer);
         if (this.$scope.host) {
             this.$timeout(() => {
-                this.$http.get(SERVER_URL + "/dealer/close", {params: {roomId: this.$scope.roomId}}).then(function (response) {
+                this.$http.get(SERVER_URL + "/dealer/close", { params: { roomId: this.$scope.roomId } }).then(function (response) {
                     console.log("close->", response);
                 });
             }, HEARTBEAT_TIME * 2 + 100);

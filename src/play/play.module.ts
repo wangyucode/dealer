@@ -9,7 +9,7 @@ import StartModalController from "../core/component/start-modal/start-modal.cont
 import EndModalDirective from "../core/component/end-modal/end-modal";
 
 
-angular.module('dealer.play', ['ngRoute', 'dealer.services'])
+angular.module('dealer.play', ['ngRoute'])
     .config(UndercoverPlayRouteConfig)
     .directive('playInfo', PlayInfoDirective)
     .directive('startModal', StartModalDirective)

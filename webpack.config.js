@@ -11,7 +11,6 @@ module.exports = (env) => {
             app: "./src/app.module.ts",
             undercover: "./src/undercover/undercover.module.ts",
             play: "./src/play/play.module.ts",
-            service: "./src/services.ts",
         },
         output: {
             filename: '[name].bundle.js',
@@ -76,7 +75,8 @@ module.exports = (env) => {
                 base: env.prod ? '/dealer/' : '/',
             }),
             new DefinePlugin({
-                SERVER_URL: env.prod ? JSON.stringify("https://wycode.cn/web/api/public") : JSON.stringify("http://localhost:8080/web/api/public")
+                //SERVER_URL: env.prod ? JSON.stringify("https://wycode.cn/web/api/public") : JSON.stringify("http://localhost:8080/web/api/public")
+                SERVER_URL: JSON.stringify("https://wycode.cn/web/api/public")
             })
         ],
         externals: {

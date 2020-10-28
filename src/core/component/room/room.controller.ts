@@ -1,7 +1,6 @@
 export default class RoomController {
 
     constructor($scope, $location, $http, initData) {
-        console.log("sdfasdf", SERVER_URL);
         $scope.create = function () {
             $scope.creating = true;
             $http.get(SERVER_URL + "/dealer/createRoom").then(function (response) {
