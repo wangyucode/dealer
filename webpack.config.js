@@ -72,8 +72,24 @@ module.exports = (env) => {
         plugins: [
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
-                template: './src/index.html',
+                template: './src/index.ejs',
                 base: env.prod ? '/dealer/' : '/',
+                templateParameters: {
+                    'bootstrap_css': 'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css',
+                    'angular': env.prod ? 'https://cdn.jsdelivr.net/npm/angular@1.8.2/angular.min.js' : 'https://cdn.jsdelivr.net/npm/angular@1.8.2/angular.js',
+                    'angular_route': env.prod ? 'https://cdn.jsdelivr.net/npm/angular-route@1.8.2/angular-route.min.js' : 'https://cdn.jsdelivr.net/npm/angular-route@1.8.2/angular-route.js',
+                    'jquery_slim': env.prod ? 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js' : 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.js',
+                    'bootstrap_js': env.prod ? 'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js' : 'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.js'
+                },
+                minify: {
+                    collapseWhitespace: true,
+                    removeComments: true,
+                    removeRedundantAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    useShortDoctype: true,
+                    minifyCSS: true
+                }
             }),
             new DefinePlugin({
                 //SERVER_URL: env.prod ? JSON.stringify("https://wycode.cn/web/api/public") : JSON.stringify("http://localhost:8080/web/api/public")

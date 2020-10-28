@@ -1,17 +1,4 @@
 /* app css stylesheet */
-html, body{
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.app{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-image: url('./assets/bg.png');
-}
 
 .create-join-form{
     margin-top: 128px;
@@ -43,13 +30,6 @@ html, body{
     cursor: pointer;
 }
 
-footer{
-    font-size: small;
-    position: absolute;
-    width: 100%;
-    bottom: 8px;
-    text-align: center;
-}
 
 .player.selected{
     border: 4px solid orange;
