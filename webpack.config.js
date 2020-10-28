@@ -1,7 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const {DefinePlugin} = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { DefinePlugin } = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env) => {
     console.log("env", env);
@@ -79,6 +80,16 @@ module.exports = (env) => {
                 SERVER_URL: JSON.stringify("https://wycode.cn/web/api/public")
             })
         ],
+        optimization: {
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+                        mangle: false
+                    }
+                }),
+            ],
+        },
         externals: {
             angular: 'angular'
         }

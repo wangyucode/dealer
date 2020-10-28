@@ -1,9 +1,9 @@
-import { IPromise } from "angular";
-import { InitData } from "../undercover/undercover.module";
+import {IPromise} from "angular";
+import {InitData} from "../undercover/undercover.module";
 
 const HEARTBEAT_TIME = 3000;
 
-export default class UndercoverPlayController {
+export default class UndercoverPlayController{
 
     private userUpdateTime = 0;
     private roleUpdateTime = 0;
